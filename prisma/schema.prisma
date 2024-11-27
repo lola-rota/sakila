@@ -1,5 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  output          = "./generated/prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -87,27 +89,25 @@ model customer {
 }
 
 model film {
-  film_id                                      Int                     @id @default(autoincrement())
-  title                                        String                  @db.VarChar(255)
+  film_id                                      Int             @id @default(autoincrement())
+  title                                        String          @db.VarChar(255)
   description                                  String?
   release_year                                 Int?
   language_id                                  Int
   original_language_id                         Int?
-  rental_duration                              Int                     @default(3) @db.SmallInt
-  rental_rate                                  Decimal                 @default(4.99) @db.Decimal(4, 2)
-  length                                       Int?                    @db.SmallInt
-  replacement_cost                             Decimal                 @default(19.99) @db.Decimal(5, 2)
-  rating                                       mpaa_rating?            @default(G)
-  last_update                                  DateTime                @default(now()) @db.Timestamp(6)
+  rental_duration                              Int             @default(3) @db.SmallInt
+  rental_rate                                  Decimal         @default(4.99) @db.Decimal(4, 2)
+  length                                       Int?            @db.SmallInt
+  replacement_cost                             Decimal         @default(19.99) @db.Decimal(5, 2)
+  rating                                       mpaa_rating?    @default(G)
+  last_update                                  DateTime        @default(now()) @db.Timestamp(6)
   special_features                             String[]
-  fulltext                                     Unsupported("tsvector")
-  language_film_language_idTolanguage          language                @relation("film_language_idTolanguage", fields: [language_id], references: [language_id])
-  language_film_original_language_idTolanguage language?               @relation("film_original_language_idTolanguage", fields: [original_language_id], references: [language_id], onDelete: Restrict)
+  language_film_language_idTolanguage          language        @relation("film_language_idTolanguage", fields: [language_id], references: [language_id])
+  language_film_original_language_idTolanguage language?       @relation("film_original_language_idTolanguage", fields: [original_language_id], references: [language_id], onDelete: Restrict)
   film_actor                                   film_actor[]
   film_category                                film_category[]
   inventory                                    inventory[]
 
-  @@index([fulltext], type: Gist)
   @@index([language_id], map: "idx_fk_language_id")
   @@index([original_language_id], map: "idx_fk_original_language_id")
   @@index([title], map: "idx_title")
@@ -154,7 +154,6 @@ model language {
   film_film_original_language_idTolanguage film[]   @relation("film_original_language_idTolanguage")
 }
 
-/// This table has subclasses and requires additional setup for migrations. Visit https://pris.ly/d/table-inheritance for more info.
 model payment {
   payment_id   Int      @id @default(autoincrement())
   customer_id  Int
@@ -170,7 +169,6 @@ model payment {
   @@index([staff_id], map: "idx_fk_staff_id")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model payment_p2007_01 {
   payment_id   Int      @default(autoincrement())
@@ -188,7 +186,6 @@ model payment_p2007_01 {
   @@ignore
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model payment_p2007_02 {
   payment_id   Int      @default(autoincrement())
@@ -206,7 +203,6 @@ model payment_p2007_02 {
   @@ignore
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model payment_p2007_03 {
   payment_id   Int      @default(autoincrement())
@@ -224,7 +220,6 @@ model payment_p2007_03 {
   @@ignore
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model payment_p2007_04 {
   payment_id   Int      @default(autoincrement())
@@ -242,7 +237,6 @@ model payment_p2007_04 {
   @@ignore
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model payment_p2007_05 {
   payment_id   Int      @default(autoincrement())
@@ -260,7 +254,6 @@ model payment_p2007_05 {
   @@ignore
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model payment_p2007_06 {
   payment_id   Int      @default(autoincrement())
