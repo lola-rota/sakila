@@ -1,26 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRentalDto } from './dto/create-rental.dto';
-import { UpdateRentalDto } from './dto/update-rental.dto';
+import { DatabaseService } from '../database/database.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class RentalService {
-  create(createRentalDto: CreateRentalDto) {
-    return 'This action adds a new rental';
+  constructor(private readonly databaseService: DatabaseService) {}
+  async create(createRentalDto: Prisma.rentalCreateInput) {
+    return this.databaseService.rental.create({ data: createRentalDto });
   }
 
-  findAll() {
-    return `This action returns all rental`;
+  async findAll() {
+    return this.databaseService.rental.findMany({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} rental`;
+  async findOne(rental_id: number) {
+    return this.databaseService.rental.findUnique({
+      where: { rental_id },
+    });
   }
 
-  update(id: number, updateRentalDto: UpdateRentalDto) {
-    return `This action updates a #${id} rental`;
+  async update(rental_id: number, updateRentalDto: Prisma.rentalUpdateInput) {
+    return this.databaseService.rental.update({
+      where: { rental_id },
+      data: updateRentalDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} rental`;
+  async remove(rental_id: number) {
+    return this.databaseService.rental.delete({ where: { rental_id } });
   }
 }

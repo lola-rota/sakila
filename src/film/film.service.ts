@@ -1,26 +1,34 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFilmDto } from './dto/create-film.dto';
-import { UpdateFilmDto } from './dto/update-film.dto';
+import { DatabaseService } from '../database/database.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class FilmService {
-  create(createFilmDto: CreateFilmDto) {
-    return 'This action adds a new film';
+  constructor(private readonly databaseService: DatabaseService) {}
+  async create(createFilmDto: Prisma.filmCreateInput) {
+    return this.databaseService.film.create({ data: createFilmDto });
   }
 
-  findAll() {
-    return `This action returns all film`;
+  async findAll() {
+    return this.databaseService.film.findMany({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} film`;
+  async findOne(film_id: number) {
+    return this.databaseService.film.findUnique({
+      where: { film_id },
+    });
   }
 
-  update(id: number, updateFilmDto: UpdateFilmDto) {
-    return `This action updates a #${id} film`;
+  async update(film_id: number, updateFilmDto: Prisma.filmUpdateInput) {
+    return this.databaseService.film.update({
+      where: { film_id },
+      data: updateFilmDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} film`;
+  async remove(film_id: number) {
+    return this.databaseService.film.delete({
+      where: { film_id },
+    });
   }
 }

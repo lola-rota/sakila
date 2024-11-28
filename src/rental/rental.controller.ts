@@ -1,14 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { RentalService } from './rental.service';
-import { CreateRentalDto } from './dto/create-rental.dto';
-import { UpdateRentalDto } from './dto/update-rental.dto';
+import { Prisma } from '@prisma/client';
 
 @Controller('rental')
 export class RentalController {
   constructor(private readonly rentalService: RentalService) {}
 
   @Post()
-  create(@Body() createRentalDto: CreateRentalDto) {
+  create(@Body() createRentalDto: Prisma.rentalCreateInput) {
     return this.rentalService.create(createRentalDto);
   }
 
@@ -23,7 +30,10 @@ export class RentalController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRentalDto: UpdateRentalDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateRentalDto: Prisma.rentalUpdateInput,
+  ) {
     return this.rentalService.update(+id, updateRentalDto);
   }
 
